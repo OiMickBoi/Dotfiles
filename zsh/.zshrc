@@ -33,6 +33,8 @@ alias grpo='git remote prune origin --dry-run'
 alias nopush='git remote set-url --push origin no_push_url' #useful when exploring a repo for which you have write access to, but don't want to accidentaly push any changes
 alias gcm='git commit'
 
+#test
+
 # nix path
 if [ -e /home/josh/.nix-profile/etc/profile.d/nix.sh ]; then . /home/josh/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
