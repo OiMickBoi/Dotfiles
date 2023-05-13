@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# tmux attach shortcut
+if [ $# -eq 0 ]; then
+    >&2 tmux attach
+    exit 1
+fi
+#echo "test"
+tmux attach -t $1
