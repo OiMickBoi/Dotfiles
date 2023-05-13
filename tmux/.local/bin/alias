@@ -1,0 +1,4 @@
+alias tv="tmux nvim" \
+      tls="tmux ls" \
+      scripts="cd ~/.local/bin" \
+      aliasrc="nvim ~/.config/shell/aliasrc" \
