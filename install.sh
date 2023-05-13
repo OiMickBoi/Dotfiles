@@ -16,6 +16,7 @@ nix-env -iA \
 	nixpkgs.fzf \
 	nixpkgs.ripgrep \
 	nixpkgs.direnv \
+	nixpkgs.ranger \
 
 
 # add zsh to valid login shells
@@ -30,3 +31,6 @@ zsh
 
 # stow
 stow git
+stow tmux
+stow zsh
+stow nvim

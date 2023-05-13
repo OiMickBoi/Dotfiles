@@ -1,4 +1,0 @@
-#!/bin/bash
-# tmux new-window shortcut
-# this can also be acomplished with Prefix+c
-tmux new-window -n $1
