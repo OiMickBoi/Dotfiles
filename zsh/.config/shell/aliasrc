@@ -1,0 +1,219 @@
+#!/bin/sh
+
+# Use neovim for vim if present.
+[ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
+
+# Use $XINITRC variable if file exists.
+[ -f "$XINITRC" ] && alias startx="startx $XINITRC"
+
+[ -f "$MBSYNCRC" ] && alias mbsync="mbsync -c $MBSYNCRC"
+
+# sudo not required for some system commands
+for command in mount umount sv pacman updatedb su shutdown poweroff reboot ; do
+	alias $command="sudo $command"
+done; unset command
+
+se() {
+	choice="$(find ~/.local/bin -mindepth 1 -printf '%P\n' | fzf)"
+	[ -f "$HOME/.local/bin/$choice" ] && $EDITOR "$HOME/.local/bin/$choice"
+	;}
+
+# Verbosity and settings that you pretty much just always are going to want.
+alias \
+	cp="cp -iv" \
+	mv="mv -iv" \
+	rm="rm -vI" \
+	bc="bc -ql" \
+	rsync="rsync -vrPlu" \
+	mkd="mkdir -pv" \
+	yt="yt-dlp --embed-metadata -i" \
+	yta="yt -x -f bestaudio/best" \
+	ytt="yt --skip-download --write-thumbnail" \
+	ffmpeg="ffmpeg -hide_banner"
+
+# Colorize commands when possible.
+alias \
+	ls="ls -hN --color=auto --group-directories-first" \
+	grep="grep --color=auto" \
+	diff="diff --color=auto" \
+	ccat="highlight --out-format=ansi" \
+	ip="ip -color=auto"
+
+# These common commands are just too long! Abbreviate them.
+alias \
+	ka="killall" \
+	g="git" \
+	trem="transmission-remote" \
+	YT="youtube-viewer" \
+	sdn="shutdown -h now" \
+	e="$EDITOR" \
+	v="$EDITOR" \
+	p="pacman" \
+	xi="sudo xbps-install" \
+	xr="sudo xbps-remove -R" \
+	xq="xbps-query" \
+	z="zathura"
+
+alias \
+	lf="lfub" \
+	magit="nvim -c MagitOnly" \
+	ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" \
+	weath="less -S ${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport" \
+
+# ========================================
+# Custom Commands not in LARBS
+# ========================================
+alias \
+	onyx="ssh joshboyle@onyx.boisestate.edu" \
+  onyxlog="joshboyle@onyx.boisestate.edu" \
+	server="ssh root@weebtouchesgrass.com" \
+	bm="vim .local/share/larbs/snippets" \
+	emacs="emacsclient -c -a 'emacs'" \
+  yts="ytfzf -l" \
+  ytm="ytfzf -l -m" \
+  ytl="ytfzf -L"
+
+# tmux commands
+alias t="tmux" \
+      tv="tmux nvim" \
+      tls="tmux ls" \
+      aliasrc="nvim ~/.config/shell/aliasrc" \
+
+alias scripts="cd ~/.local/bin"
+# ========================================
+# Aliases for frequently used git commands
+# ========================================
+alias gs='git status'
+alias gw='git show'
+alias gwc='git show --color-words'
+alias gws='git show --stat'
+alias ga='git add .'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gdw='git diff --color-words'
+alias gg='git customLog1'
+alias gg2='git customLog2'
+alias gg3='git customLog3'
+alias gg4='git customLog4'
+alias ggb='git log --oneline --decorate --graph --all'
+alias ggba='git log --oneline --decorate --graph --all --author-date-order'
+alias gk='gitk --all'
+alias gt='git mergetool'
+alias gco='git checkout'
+alias grc='git rebase --continue'
+alias grv='git remote -v'
+alias gba='git branch -avv'
+alias gbv='git branch -vv'
+alias grpo='git remote prune origin --dry-run'
+alias nopush='git remote set-url --push origin no_push_url' #useful when exploring a repo for which you have write access to, but don't want to accidentaly push any changes
+alias gcm='git commit'
+
+# ======================================
+# Aliases for handling multiple ssh keys
+# ======================================
+# Assumption is that in the `~/.ssh` folder
+# there are multiple files containing the ssh keys
+# for connecting to different sergices, e.g.,:
+# - file `id_rsa_github` is used to connect to GitHub
+# - file `id_rsa_bitbucket` is used to connect to BitBucket
+# - etc.
+alias sb="switchIdentitiesUsingSSHKeys id_rsa_bitbucket"
+alias sg="switchIdentitiesUsingSSHKeys id_rsa_github"
+alias sd="deleteDefaultSSHKey"
+
+# helper method for the aliases created above
+switchIdentitiesUsingSSHKeys()
+{
+    if [ $# -ne 1 ]
+    then
+        echo "switchIdentitiesUsingSSHKeys: No parameters, exiting..."
+        return 1
+    fi
+
+    cp -f ~/.ssh/$1 ~/.ssh/id_rsa
+    cp -f ~/.ssh/$1.pub ~/.ssh/id_rsa.pub
+    echo "The following ssh key was set in the ~/.ssh/ folder"
+    echo "~/.ssh/$1"
+}
+
+deleteDefaultSSHKey()
+{
+    rm -f ~/.ssh/id_rsa
+    echo "The default ssh key was removed: ~/.ssh/id_rsa"
+}
+
+
+
+
+# ===============================================
+# Aliases for switching to different JDK versions
+# ===============================================
+# Assumption is that JDK 8 is the default version installed
+# and JDK 8 is added to PATH and to JAVA_HOME.
+# Any time a new bash terminal is opened, it will use JDK 8
+#
+# It is possible to also have JDK 11 and JDK 17 installed on
+# your system  and temporarily switch to them in the current
+# bash terminal
+#
+# Example of opening a new bash terminal:
+# $ javac -version
+# javac 1.8
+#
+# $ java11temporaryswitch
+# $ javac -version
+# javac 11
+#
+# $ java17temporaryswitch
+# $ javac -version
+# javac 17
+#
+# (close the bash terminal and open a new one):
+# $ javac -version
+# javac 1.8
+
+java11temporaryswitch()
+{
+  echo "Tempoarary switching to Java JDK 11 in the current bash terminal only"
+
+  echo "Updating PATH (to add the java 11 at the beginning of the PATH)"
+
+  # TODO: update with your actual path (that ends in bin)
+  export PATH="/c/Program Files/Java/jdk-11.0.4/bin:$PATH"
+
+  echo "echo \$PATH"
+  echo $PATH
+
+  echo ""
+
+  echo "Updating JAVA_HOME to point to JDK 11"
+
+  # TODO: update with your actual path (that does not end in bin)
+  export JAVA_HOME="c:\\Program Files\\Java\\jdk-11.0.4\\"
+
+  echo "echo \$JAVA_HOME"
+  echo $JAVA_HOME
+}
+
+java17temporaryswitch()
+{
+  echo "Tempoarary switching to Java JDK 17 in the current bash terminal only"
+
+  echo "Updating PATH (to add the java 17 at the beginning of the PATH)"
+
+  # TODO: update with your actual path (that ends in bin)
+  export PATH="/c/Program Files/Zulu/zulu-17/bin:$PATH"
+
+  echo "echo \$PATH"
+  echo $PATH
+
+  echo ""
+
+  echo "Updating JAVA_HOME to point to JDK 17"
+
+  # TODO: update with your actual path (that does not end in bin)
+  export JAVA_HOME="c:\\Program Files\\Zulu\\zulu-17\\"
+
+  echo "echo \$JAVA_HOME"
+  echo $JAVA_HOME
+}

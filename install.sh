@@ -10,8 +10,6 @@ nix-env -iA \
 	nixpkgs.neovim \
 	nixpkgs.git \
 	nixpkgs.tmux \
-	#nixpkgs.antibody \
-	#nixpkgs.cargo
 	nixpkgs.nodejs
 	nixpkgs.stow \
 	nixpkgs.yarn \
@@ -30,9 +28,5 @@ sudo chsh -s $(which zsh) $USER
 # open zsh terminal
 zsh
 
-# bundle zsh plugins
-#antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
-
 # stow
 stow git
-stow nvim
