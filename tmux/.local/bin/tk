@@ -1,9 +1,0 @@
-#!/bin/sh
-
-# tmux kill-session shortcut
-if [ $# -eq 0 ]; then
-    >&2 tmux kill-session
-    exit 1
-else
-    tmux kill-session -t $1
-fi
