@@ -4,6 +4,7 @@ alias tls="tmux ls" \
       scripts="cd ~/.local/bin" \
       vim="nvim" \
       v="vim" \
+      t="tmux" \
 
 # ========================================
 # Aliases for frequently used git commands

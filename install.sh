@@ -34,3 +34,11 @@ stow git
 stow tmux
 stow zsh
 stow nvim
+
+# change script permissions
+chmod +x ~/.local/bin/tmux/ta
+chmod +x ~/.local/bin/tmux/tk
+chmod +x ~/.local/bin/tmux/tkw
+chmod +x ~/.local/bin/tmux/tn
+chmod +x ~/.local/bin/tmux/tns
+chmod +x ~/.local/bin/tmux/tw
